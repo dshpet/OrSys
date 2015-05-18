@@ -19,6 +19,14 @@ if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
 var app = express();
+
+app.get('*',function(req,res,next){
+  if(req.headers['x-forwarded-proto']!='https')
+    res.redirect('https://' + req.get('Host') +req.url);
+  else
+    next(); /* Continue to other routes if we're not redirecting */
+});
+
 var server = require('http').createServer(app);
 var socketio = require('socket.io')(server, {
   serveClient: (config.env === 'production') ? false : true,
@@ -31,21 +39,7 @@ require('./routes')(app);
 //force https
 
 
- var forceSsl = function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-        return res.redirect(['https://', req.get('Host'), req.url].join(''));
-    }
-    return next();
- };
 
- app.configure(function () {
-
-    if (env === 'production') {
-        app.use(forceSsl);
-    }
-
-    // other configurations etc for express go here...
-}
 
 // Start server
 server.listen(config.port, config.ip, function () {
