@@ -28,6 +28,25 @@ require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
 
+//force https
+
+
+ var forceSsl = function (req, res, next) {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    }
+    return next();
+ };
+
+ app.configure(function () {
+
+    if (env === 'production') {
+        app.use(forceSsl);
+    }
+
+    // other configurations etc for express go here...
+}
+
 // Start server
 server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
