@@ -23,10 +23,58 @@ exports.show = function(req, res) {
 
 // Creates a new dataReceiver in the DB.
 exports.create = function(req, res) {
-  console.log("POST in dataReceiver");
   console.log(req.body);
   DataReceiver.create(req.body, function(err, dataReceiver) {
     if(err) { return handleError(res, err); }
+
+    //processing correct axis
+    //in case of closures
+    var backbone = dataReceiver.pressureBackbone;
+    var seat = dataReceiver.pressureSeat;
+    var leftArmrest = dataReceiver.pressureLeftArmrest;
+    var rightArmrest = dataReceiver.pressureRightArmrest;
+
+    var neckInRightPosition = true;
+    var backboneInRightPosition = true;
+    var leftArmrestInRightPosition = true;
+    var rightArmrestInRightPosition = true;
+
+    /*
+    CORRECT BACKBONE POSITION IS CONSIDERED LIKE THIS
+    from neck to bottom pressure points
+    0 -> light pressure (20, 40) / no pressure (0)
+    1 -> middle pressure (40, 75)
+    2 -> middle pressure (40, 60) / below middle pressure (30, 50)
+    3 -> light pressure (20, 40)
+    4 -> above light pressure (30, 50)
+
+    CORRECT SEAT POSITION IS CONSIDERED LIKE THIS
+    0, 1 - back part; left, right
+    2, 3 - right part; left, right
+    
+    0 = 1 -> strong pressure (above 60)
+    2 = 3 -> middle pressure (40, 75)
+
+    CORRECT ARMREST POSITIONS ARE CONSIDERED LIKE THIS
+    leftArmrest = rightArmrest
+    --------------
+    IF BACKBONE OVERALL PRESSURE = 0
+    CORRECT SEAT POSITION IS CONSIDERED LIKE THIS
+    0, 1 - back part; left, right
+    2, 3 - right part; left, right
+    
+    0 = 1 -> strong pressure (above 60)
+    2 = 3 -> strong pressure (40, 75)
+
+    OTHERWISE PERSON IS SITTING WRONGLY
+    */
+
+    _.forEach(backbone, function(val, key){
+      //considering values from neck to bottom
+
+
+    });
+
     return res.json(201, dataReceiver);
   });
 };
