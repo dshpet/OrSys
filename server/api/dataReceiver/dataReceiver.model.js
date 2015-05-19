@@ -5,10 +5,10 @@ var mongoose = require('mongoose'),
 
 var DataReceiverSchema = new Schema({
   id: String,
-  pressureBackbone: [Number],
-  pressureSeat: [Number],
-  pressureLeftArmrest:[Number],
-  pressureRightArmrest:[Number]
+  pressureBackbone: [Schema.Types.Mixed],
+  pressureSeat: [Schema.Types.Mixed],
+  pressureLeftArmrest:[Schema.Types.Mixed],
+  pressureRightArmrest:[Schema.Types.Mixed]
 });
 
 module.exports = mongoose.model('DataReceiver', DataReceiverSchema);

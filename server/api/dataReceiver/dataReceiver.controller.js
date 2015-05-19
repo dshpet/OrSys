@@ -34,11 +34,6 @@ exports.create = function(req, res) {
     var leftArmrest = dataReceiver.pressureLeftArmrest;
     var rightArmrest = dataReceiver.pressureRightArmrest;
 
-    var neckInRightPosition = true;
-    var backboneInRightPosition = true;
-    var leftArmrestInRightPosition = true;
-    var rightArmrestInRightPosition = true;
-
     /*
     CORRECT BACKBONE POSITION IS CONSIDERED LIKE THIS
     from neck to bottom pressure points
@@ -69,10 +64,64 @@ exports.create = function(req, res) {
     OTHERWISE PERSON IS SITTING WRONGLY
     */
 
-    _.forEach(backbone, function(val, key){
-      //considering values from neck to bottom
+    function almostEqual(value1, value2){
+      return Math.abs(value1 - value2) <= 8;
+    }
+    function noPressure(value){
+      return value >= 0 && value < 10;
+    }
+    function lightPressure(value){
+      return value >= 10 && value < 30;
+    }
+    function aboveLightPressure(value){
+      return value >= 30 && value < 50; 
+    }
+    function middlePressure(value){
+      return value >= 50 && value < 70;
+    }
+    function strongPressure(value){
+      return value >= 70 && value <= 100;
+    }
+    function validateBackbonePressure(backbonePressureArray){
+      return 
+        (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) &&
+        (middlePressure(backbonePressureArray[1].value)) &&
+        (middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) &&
+        (lightPressure(backbonePressureArray[3].value)) &&
+        (aboveLightPressure(backbonePressureArray[4].value))
+        ;
+    }
+    function noBackbonePressure(backbonePressureArray){
+      return 
+        almostEqual(backbonePressureArray[0].value, 0) &&
+        almostEqual(backbonePressureArray[1].value, 0) &&
+        almostEqual(backbonePressureArray[2].value, 0) &&
+        almostEqual(backbonePressureArray[3].value, 0) &&
+        almostEqual(backbonePressureArray[4].value, 0)
+        ;
+    }
+    function validateSeatPressure(seatPressureArray){
+      return 
+        (almostEqual(seatPressureArray[0].value, seatPressureArray[1].value) && 
+         strongPressure(seatPressureArray[0].value, seatPressureArray[1].value)) &&
+        (almostEqual(seatPressureArray[2].value, seatPressureArray[3].value) &&
+          middlePressure(seatPressureArray[2].value, seatPressureArray[3].value))
+        ;
+    }
+    function validateArmrestPressure(leftArmrestArray, rightArmrestArray){
+      return 
+        (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));
+    }
+    function validateData(dataReceiver){
+      return 
+        validateBackbonePressure(backbone) &&
+        validateSeatPressure(seat) &&
+        validateArmrestPressure(leftArmrest, rightArmrest)
+        ;
+    }
 
-
+    var correct = validateData(dataReceiver);
+    console.log(correct);
     });
 
     return res.json(201, dataReceiver);
