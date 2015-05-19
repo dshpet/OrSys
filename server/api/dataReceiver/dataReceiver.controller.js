@@ -23,7 +23,7 @@ exports.show = function(req, res) {
 
 // Creates a new dataReceiver in the DB.
 exports.create = function(req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   DataReceiver.create(req.body, function(err, dataReceiver) {
     if(err) { return handleError(res, err); }
 
@@ -33,7 +33,6 @@ exports.create = function(req, res) {
     var seat = dataReceiver.pressureSeat;
     var leftArmrest = dataReceiver.pressureLeftArmrest;
     var rightArmrest = dataReceiver.pressureRightArmrest;
-
     /*
     CORRECT BACKBONE POSITION IS CONSIDERED LIKE THIS
     from neck to bottom pressure points
@@ -112,17 +111,21 @@ exports.create = function(req, res) {
       return 
         (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));
     }
-    function validateData(dataReceiver){
+    function validateData(receivedDataObject){
+      console.log("Data from validateData: " + receivedDataObject);
+      console.log("One of the objects: " + receivedDataObject.pressureBackbone[0]);
+      console.log("One of the values: " + receivedDataObject.pressureBackbone[0].value);
       return 
-        validateBackbonePressure(backbone) &&
-        validateSeatPressure(seat) &&
-        validateArmrestPressure(leftArmrest, rightArmrest)
+        validateBackbonePressure(receivedDataObject.pressureBackbone) &&
+        validateSeatPressure(receivedDataObject.pressureSeat) &&
+        validateArmrestPressure(receivedDataObject.pressureLeftArmrest, receivedDataObject.pressureRightArmrest)
         ;
     }
 
     var correct = validateData(dataReceiver);
-    console.log(correct);
-    });
+    console.log("Data : " + dataReceiver);
+    console.log("Correct position : " + correct);
+    
 
     return res.json(201, dataReceiver);
   });
