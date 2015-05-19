@@ -24,12 +24,11 @@ exports.show = function(req, res) {
 // Creates a new dataReceiver in the DB.
 exports.create = function(req, res) {
   console.log("POST in dataReceiver");
-  console.log(req);
   console.log(req.body);
-  /*DataReceiver.create(req.body, function(err, dataReceiver) {
+  DataReceiver.create(req.body, function(err, dataReceiver) {
     if(err) { return handleError(res, err); }
     return res.json(201, dataReceiver);
-  });*/
+  });
 };
 
 // Updates an existing dataReceiver in the DB.
