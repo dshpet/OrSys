@@ -82,13 +82,16 @@ exports.create = function(req, res) {
       return value >= 70 && value <= 100;
     }
     function validateBackbonePressure(backbonePressureArray){
-      return 
-        (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) &&
+      return (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) && 
+      (middlePressure(backbonePressureArray[1].value)) && 
+      (middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) && 
+      (lightPressure(backbonePressureArray[3].value)) && (aboveLightPressure(backbonePressureArray[4].value));
+        /*(lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) &&
         (middlePressure(backbonePressureArray[1].value)) &&
         (middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) &&
         (lightPressure(backbonePressureArray[3].value)) &&
         (aboveLightPressure(backbonePressureArray[4].value))
-        ;
+        ;*/
     }
     function noBackbonePressure(backbonePressureArray){
       return 
@@ -96,35 +99,57 @@ exports.create = function(req, res) {
         almostEqual(backbonePressureArray[1].value, 0) &&
         almostEqual(backbonePressureArray[2].value, 0) &&
         almostEqual(backbonePressureArray[3].value, 0) &&
-        almostEqual(backbonePressureArray[4].value, 0)
-        ;
+        almostEqual(backbonePressureArray[4].value, 0);
     }
     function validateSeatPressure(seatPressureArray){
+      console.log("seatPressureArray: " + seatPressureArray);
       return 
         (almostEqual(seatPressureArray[0].value, seatPressureArray[1].value) && 
          strongPressure(seatPressureArray[0].value, seatPressureArray[1].value)) &&
         (almostEqual(seatPressureArray[2].value, seatPressureArray[3].value) &&
-          middlePressure(seatPressureArray[2].value, seatPressureArray[3].value))
-        ;
+          middlePressure(seatPressureArray[2].value, seatPressureArray[3].value));
     }
     function validateArmrestPressure(leftArmrestArray, rightArmrestArray){
+      console.log("leftArmrestArray: " + leftArmrestArray);
+      console.log("rightArmrestArray: " + rightArmrestArray);
       return 
         (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));
     }
     function validateData(receivedDataObject){
-      console.log("Data from validateData: " + receivedDataObject);
-      console.log("One of the objects: " + receivedDataObject.pressureBackbone[0]);
-      console.log("One of the values: " + receivedDataObject.pressureBackbone[0].value);
+      //console.log("Data from validateData: " + receivedDataObject);
+      //console.log("One of the objects: " + receivedDataObject.pressureBackbone[0]);
+      //console.log("One of the values: " + receivedDataObject.pressureBackbone[0].value);
       return 
         validateBackbonePressure(receivedDataObject.pressureBackbone) &&
         validateSeatPressure(receivedDataObject.pressureSeat) &&
-        validateArmrestPressure(receivedDataObject.pressureLeftArmrest, receivedDataObject.pressureRightArmrest)
-        ;
+        validateArmrestPressure(receivedDataObject.pressureLeftArmrest, receivedDataObject.pressureRightArmrest);
     }
 
-    var correct = validateData(dataReceiver);
-    console.log("Data : " + dataReceiver);
-    console.log("Correct position : " + correct);
+    //var correct = validateData(dataReceiver);
+    //var correctBackbonePos = 
+    /*var backbonePressureArray = dataReceiver.pressureBackbone;
+    console.log("here!!!!!");
+    console.log("Correct position checker: " + (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) &&
+        (middlePressure(backbonePressureArray[1].value)) &&
+        (middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) &&
+        (lightPressure(backbonePressureArray[3].value)) &&
+        (aboveLightPressure(backbonePressureArray[4].value)));
+    var statement = (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) && (middlePressure(backbonePressureArray[1].value)) && (middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) && (lightPressure(backbonePressureArray[3].value)) && (aboveLightPressure(backbonePressureArray[4].value));
+    console.log("Position checker one string: ");
+    console.log(statement);
+    console.log("IT WAS STATEMENT");
+    var statementFromFunction = validateBackbonePressure(dataReceiver.pressureBackbone);
+    console.log(statementFromFunction);
+    console.log("IT WAS STATEMENT FROM FUNCTION");*/
+
+    var correctBackbonePos = validateBackbonePressure(dataReceiver.pressureBackbone);
+    var correctSeatPos = validateSeatPressure(dataReceiver.pressureSeat);
+    var correctArmrestPos = validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
+
+    var correctPosition = correctBackbonePos && correctSeatPos && correctArmrestPos;
+
+    console.log("Correct position : ");
+    console.log(correctPosition);
     
 
     return res.json(201, dataReceiver);
