@@ -93,5 +93,8 @@ var validateData = function (receivedDataObject){
     noBackbonePressure: noBackbonePressure,
     validateSeatPressure: validateSeatPressure,
     validateArmrestPressure: validateArmrestPressure,
-    validateData: validateData
+    validateData: validateData,
+    getModule: function (req, res) {
+    	return res.json(module.exports);
+    }
 };
