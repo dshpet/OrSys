@@ -1,5 +1,58 @@
-//processing correct axis
-    
+var almostEqual = function(value1, value2){
+	return Math.abs(value1 - value2) <= 8;
+};
+var noPressure = function (value){
+	return value >= 0 && value < 10;
+};
+var lightPressure = function (value){
+	return value >= 10 && value < 30;
+};
+var aboveLightPressure = function (value){
+	return value >= 30 && value < 50; 
+};
+var middlePressure = function (value){
+	return value >= 50 && value < 70;
+};
+var strongPressure = function (value){
+	return value >= 70 && value <= 100;
+};
+var validateBackbonePressure = function (backbonePressureArray){
+	return (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) && 
+	(middlePressure(backbonePressureArray[1].value)) && 
+	(middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) && 
+	(lightPressure(backbonePressureArray[3].value)) && 
+	(aboveLightPressure(backbonePressureArray[4].value));
+};
+var noBackbonePressure = function (backbonePressureArray){
+	return 
+	almostEqual(backbonePressureArray[0].value, 0) &&
+	almostEqual(backbonePressureArray[1].value, 0) &&
+	almostEqual(backbonePressureArray[2].value, 0) &&
+	almostEqual(backbonePressureArray[3].value, 0) &&
+	almostEqual(backbonePressureArray[4].value, 0);
+};
+var validateSeatPressure = function (seatPressureArray){
+	return 
+	(almostEqual(seatPressureArray[0].value, seatPressureArray[1].value) && 
+		strongPressure(seatPressureArray[0].value, seatPressureArray[1].value)) &&
+	(almostEqual(seatPressureArray[2].value, seatPressureArray[3].value) &&
+		middlePressure(seatPressureArray[2].value, seatPressureArray[3].value));
+};
+var validateArmrestPressure = function (leftArmrestArray, rightArmrestArray){
+	return (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));
+};
+var validateData = function (receivedDataObject){
+      //objects are needed for correct sync
+      var correctBackbonePos = validateBackbonePressure(receivedDataObject.pressureBackbone);
+      var correctSeatPos = validateSeatPressure(receivedDataObject.pressureSeat);
+      var correctArmrestPos = validateArmrestPressure(receivedDataObject.pressureLeftArmrest, receivedDataObject.pressureRightArmrest);
+
+      return correctBackbonePos && correctSeatPos && correctArmrestPos;
+ };
+
+  module.exports = {
+	//processing correct axis
+
     /*
     CORRECT BACKBONE POSITION IS CONSIDERED LIKE THIS
     from neck to bottom pressure points
@@ -29,56 +82,16 @@
 
     OTHERWISE PERSON IS SITTING WRONGLY
     */
-module.exports = {
-    almostEqual: function(value1, value2){
-      return Math.abs(value1 - value2) <= 8;
-    },
-    noPressure: function (value){
-      return value >= 0 && value < 10;
-    },
-    lightPressure: function (value){
-      return value >= 10 && value < 30;
-    },
-    aboveLightPressure: function (value){
-      return value >= 30 && value < 50; 
-    },
-    middlePressure: function (value){
-      return value >= 50 && value < 70;
-    },
-    strongPressure: function (value){
-      return value >= 70 && value <= 100;
-    },
-    validateBackbonePressure: function (backbonePressureArray){
-      return (lightPressure(backbonePressureArray[0].value) || noPressure(backbonePressureArray[0].value)) && 
-      (middlePressure(backbonePressureArray[1].value)) && 
-      (middlePressure(backbonePressureArray[2].value) || aboveLightPressure(backbonePressureArray[2].value)) && 
-      (lightPressure(backbonePressureArray[3].value)) && 
-      (aboveLightPressure(backbonePressureArray[4].value));
-    },
-    noBackbonePressure: function (backbonePressureArray){
-      return 
-        almostEqual(backbonePressureArray[0].value, 0) &&
-        almostEqual(backbonePressureArray[1].value, 0) &&
-        almostEqual(backbonePressureArray[2].value, 0) &&
-        almostEqual(backbonePressureArray[3].value, 0) &&
-        almostEqual(backbonePressureArray[4].value, 0);
-    },
-    validateSeatPressure: function (seatPressureArray){
-      return 
-        (almostEqual(seatPressureArray[0].value, seatPressureArray[1].value) && 
-         strongPressure(seatPressureArray[0].value, seatPressureArray[1].value)) &&
-        (almostEqual(seatPressureArray[2].value, seatPressureArray[3].value) &&
-          middlePressure(seatPressureArray[2].value, seatPressureArray[3].value));
-    },
-    validateArmrestPressure: function (leftArmrestArray, rightArmrestArray){
-      return (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));
-    },
-    validateData: function (receivedDataObject){
-      //objects are needed for correct sync
-      var correctBackbonePos = validateBackbonePressure(dataReceiver.pressureBackbone);
-      var correctSeatPos = validateSeatPressure(dataReceiver.pressureSeat);
-      var correctArmrestPos = validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
 
-      return correctBackbonePos && correctSeatPos && correctArmrestPos;
-    }
+    almostEqual: almostEqual,
+    noPressure: noPressure,
+    lightPressure: lightPressure,
+    aboveLightPressure: aboveLightPressure,
+    middlePressure: middlePressure,
+    strongPressure: strongPressure,
+    validateBackbonePressure: validateBackbonePressure,
+    noBackbonePressure: noBackbonePressure,
+    validateSeatPressure: validateSeatPressure,
+    validateArmrestPressure: validateArmrestPressure,
+    validateData: validateData
 };
