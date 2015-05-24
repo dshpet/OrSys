@@ -39,8 +39,22 @@ exports.create = function(req, res) {
 
     console.log("Ohters: " + back + seat + armrest);
 
+    var gcm = require('android-gcm');
+    // initialize new androidGcm object 
+    var gcmObject = new gcm.AndroidGcm('AIzaSyDqx6dCzs-WtIKuSQMeKqldn31kBdCcZhQ');
+
     function notifyUser(user){
-      //todo send notification to user;
+      var message = new gcm.Message({
+        registration_ids: ['x'],
+        data: {
+          text: 'Sit still please'
+        }
+      });
+      gcmObject.send(message, function(error, response){
+        if (error) 
+          console.log(error);
+        console.log(response);
+      });
     }
     if (!correctPosition) {
       notifyUser();
