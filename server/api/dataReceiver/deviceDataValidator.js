@@ -36,9 +36,13 @@ var validateSeatPressure = function (seatPressureArray){
     var almostEqual0and1 = almostEqual(seatPressureArray[0].value, seatPressureArray[1].value);
     var almostEqual2and3 = almostEqual(seatPressureArray[2].value, seatPressureArray[3].value);
 
-	return 
-	 almostEqual0and1 && strongPressure(seatPressureArray[0].value) && strongPressure(seatPressureArray[1].value) &&
-	 almostEqual2and3 && middlePressure(seatPressureArray[2].value) && middlePressure(seatPressureArray[3].value);
+    var firstCondition = almostEqual0and1 && strongPressure(seatPressureArray[0].value) && strongPressure(seatPressureArray[1].value);
+    var secondCondition = almostEqual2and3 && middlePressure(seatPressureArray[2].value) && middlePressure(seatPressureArray[3].value);
+
+    var result = firstCondition && secondCondition;
+    console.log("Seat full bool: " +  result);
+
+	return result;
 };
 var validateArmrestPressure = function (leftArmrestArray, rightArmrestArray){
 	return (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));

@@ -28,10 +28,16 @@ exports.create = function(req, res) {
 
     var deviceDataValidator = require('./deviceDataValidator.js');   
 
+    var back = deviceDataValidator.validateBackbonePressure(dataReceiver.pressureBackbone);
+    var seat = deviceDataValidator.validateSeatPressure(dataReceiver.pressureSeat);
+    var armrest = deviceDataValidator.validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
+
     var correctPosition = deviceDataValidator.validateData(dataReceiver);
 
     console.log("Correct position : ");
     console.log(correctPosition);
+
+    console.log("Ohters: " + back + seat + armrest);
 
     function notifyUser(user){
       //todo send notification to user;
