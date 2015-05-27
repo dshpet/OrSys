@@ -90,6 +90,13 @@ exports.destroy = function(req, res) {
   });
 };
 
+exports.getByGoogleId = function(req, res){
+  DataReceiver.find({'googleId': req.googleId}, function(err, dataReceivers){
+    if(err) { return handleError(res, err); }
+    return res.json(200, dataReceivers);
+  });
+};
+
 function handleError(res, err) {
   console.log(res.body);
   console.log(err);
