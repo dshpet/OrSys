@@ -28,18 +28,37 @@ exports.create = function(req, res) {
 
     var deviceDataValidator = require('./deviceDataValidator.js');   
 
-    var correctBackbonePos = deviceDataValidator.validateBackbonePressure(dataReceiver.pressureBackbone);
-    var correctSeatPos = deviceDataValidator.validateSeatPressure(dataReceiver.pressureSeat);
-    var correctArmrestPos = deviceDataValidator.validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
-    var correctPosition = deviceDataValidator.validateData(dataReceiver);
+
+    var back = deviceDataValidator.validateBackbonePressure(dataReceiver.pressureBackbone);
+    var seat = deviceDataValidator.validateSeatPressure(dataReceiver.pressureSeat);
+    var armrest = deviceDataValidator.validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
+
+
+    var correctPosition = back && seat && armrest;
 
     console.log("Correct position : ");
     console.log(correctPosition);
 
-    console.log("Other correct positions: " + correctBackbonePos + correctSeatPos + correctArmrestPos);
+
+    console.log("Ohters: " + back + seat + armrest);
+
+    var gcm = require('android-gcm');
+    // initialize new androidGcm object 
+    var gcmObject = new gcm.AndroidGcm('AIzaSyDqx6dCzs-WtIKuSQMeKqldn31kBdCcZhQ');
+
 
     function notifyUser(user){
-      //todo send notification to user;
+      var message = new gcm.Message({
+        registration_ids: ['x'],
+        data: {
+          text: 'Sit still please'
+        }
+      });
+      gcmObject.send(message, function(error, response){
+        if (error) 
+          console.log(error);
+        console.log(response);
+      });
     }
     if (!correctPosition) {
       notifyUser();

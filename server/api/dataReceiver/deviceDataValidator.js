@@ -27,19 +27,25 @@ var validateBackbonePressure = function (backbonePressureArray){
 	(aboveLightPressure(backbonePressureArray[4].value));
 };
 var noBackbonePressure = function (backbonePressureArray){
-	return 
-	almostEqual(backbonePressureArray[0].value, 0) &&
-	almostEqual(backbonePressureArray[1].value, 0) &&
-	almostEqual(backbonePressureArray[2].value, 0) &&
-	almostEqual(backbonePressureArray[3].value, 0) &&
-	almostEqual(backbonePressureArray[4].value, 0);
+    var almostEqual0 = almostEqual(backbonePressureArray[0].value, 0);
+    var almostEqual1 = almostEqual(backbonePressureArray[1].value, 0);
+    var almostEqual2 = almostEqual(backbonePressureArray[2].value, 0);
+    var almostEqual3 = almostEqual(backbonePressureArray[3].value, 0);
+    var almostEqual4 = almostEqual(backbonePressureArray[4].value, 0);
+	return almostEqual0 && almostEqual1 && almostEqual2 && almostEqual3 && almostEqual4;
+	
 };
 var validateSeatPressure = function (seatPressureArray){
-	return 
-	(almostEqual(seatPressureArray[0].value, seatPressureArray[1].value) && 
-		strongPressure(seatPressureArray[0].value, seatPressureArray[1].value)) &&
-	(almostEqual(seatPressureArray[2].value, seatPressureArray[3].value) &&
-		middlePressure(seatPressureArray[2].value, seatPressureArray[3].value));
+    var almostEqual0and1 = almostEqual(seatPressureArray[0].value, seatPressureArray[1].value);
+    var almostEqual2and3 = almostEqual(seatPressureArray[2].value, seatPressureArray[3].value);
+
+    var firstCondition = almostEqual0and1 && strongPressure(seatPressureArray[0].value) && strongPressure(seatPressureArray[1].value);
+    var secondCondition = almostEqual2and3 && middlePressure(seatPressureArray[2].value) && middlePressure(seatPressureArray[3].value);
+
+    var result = firstCondition && secondCondition;
+    console.log("Seat full bool: " +  result);
+
+	return result;
 };
 var validateArmrestPressure = function (leftArmrestArray, rightArmrestArray){
 	return (almostEqual(leftArmrestArray[0].value, rightArmrestArray[0].value));
