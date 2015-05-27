@@ -5,6 +5,9 @@ angular.module('orSysApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },{
+      'title': 'Dashboard',
+      'link': '/dashboard'
     }];
 
     $scope.isCollapsed = true;

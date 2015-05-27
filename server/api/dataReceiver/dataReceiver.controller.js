@@ -23,24 +23,20 @@ exports.show = function(req, res) {
 
 // Creates a new dataReceiver in the DB.
 exports.create = function(req, res) {
-  DataReceiver.create(req.body, function(err, dataReceiver) {
-    if(err) { return handleError(res, err); }
+  var dataReceiver = new DataReceiver(req.body);
+  var deviceDataValidator = require('./deviceDataValidator.js');   
 
-    var deviceDataValidator = require('./deviceDataValidator.js');   
-
-
-    var back = deviceDataValidator.validateBackbonePressure(dataReceiver.pressureBackbone);
-    var seat = deviceDataValidator.validateSeatPressure(dataReceiver.pressureSeat);
-    var armrest = deviceDataValidator.validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
+  var back = deviceDataValidator.validateBackbonePressure(dataReceiver.pressureBackbone);
+  var seat = deviceDataValidator.validateSeatPressure(dataReceiver.pressureSeat);
+  var armrest = deviceDataValidator.validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
 
 
-    var correctPosition = back && seat && armrest;
+  var correctPosition = back && seat && armrest;
 
-    console.log("Correct position : ");
-    console.log(correctPosition);
+  dataReceiver.correct = correctPosition;
 
-
-    console.log("Ohters: " + back + seat + armrest);
+  dataReceiver.save(function(error){
+    if(error) {return handleError(res, error); }
 
     var gcm = require('android-gcm');
     // initialize new androidGcm object 
@@ -63,7 +59,6 @@ exports.create = function(req, res) {
     if (!correctPosition) {
       notifyUser();
     }
-    
 
     return res.json(201, dataReceiver);
   });

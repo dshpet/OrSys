@@ -1,5 +1,4 @@
 'use strict';
-var Q = require('q'); //for async calls
 
 var almostEqual = function(value1, value2){
 	return Math.abs(value1 - value2) <= 8;
