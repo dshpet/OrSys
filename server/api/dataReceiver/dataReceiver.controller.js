@@ -28,10 +28,15 @@ exports.create = function(req, res) {
 
     var deviceDataValidator = require('./deviceDataValidator.js');   
 
+    var correctBackbonePos = deviceDataValidator.validateBackbonePressure(dataReceiver.pressureBackbone);
+    var correctSeatPos = deviceDataValidator.validateSeatPressure(dataReceiver.pressureSeat);
+    var correctArmrestPos = deviceDataValidator.validateArmrestPressure(dataReceiver.pressureLeftArmrest, dataReceiver.pressureRightArmrest);
     var correctPosition = deviceDataValidator.validateData(dataReceiver);
 
     console.log("Correct position : ");
     console.log(correctPosition);
+
+    console.log("Other correct positions: " + correctBackbonePos + correctSeatPos + correctArmrestPos);
 
     function notifyUser(user){
       //todo send notification to user;
