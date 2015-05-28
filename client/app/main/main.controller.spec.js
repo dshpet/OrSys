@@ -5,6 +5,7 @@ describe('Controller: MainCtrl', function () {
   // load the controller's module
   beforeEach(module('orSysApp'));
   beforeEach(module('socketMock'));
+  beforeEach(module('ngAnimate'));
 
   var MainCtrl,
       scope,

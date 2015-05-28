@@ -19,8 +19,4 @@ angular.module('orSysApp')
         socket.syncUpdates('dataReceiver', $scope.userData);
       });
     };
-    
-    /*var timer = setInterval(function() {
-      $scope.$apply(updateData);
-    }, 5000); */ 
   });
