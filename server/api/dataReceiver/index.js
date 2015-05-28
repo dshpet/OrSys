@@ -12,7 +12,7 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
-router.get('/:googleId', controller.getByGoogleId);
+router.get('/googleId/:googleId', controller.getByGoogleId);
 
 router.get('/validator', deviceDataValidator.getModule);
 

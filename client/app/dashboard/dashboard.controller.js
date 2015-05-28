@@ -15,5 +15,8 @@ angular.module('orSysApp')
       });
     }, function(err){
     	console.log(err);
-    });;    
+    });
+
+    //$scope.formatTime = function(utcDate) { return moment(utcDate).format("MMddYYYY"); } ;
+    $scope.formatTime1 = function(mongoDate) {return mongoDate.toDateString();};   
   });

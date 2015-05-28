@@ -91,7 +91,9 @@ exports.destroy = function(req, res) {
 };
 
 exports.getByGoogleId = function(req, res){
-  DataReceiver.find({'googleId': req.googleId}, function(err, dataReceivers){
+  console.log("Get by google ID request params: " + req.params.googleId);
+  //console.log(req.params);
+  DataReceiver.find({'googleId': req.params.googleId}, function(err, dataReceivers){
     if(err) { return handleError(res, err); }
     return res.json(200, dataReceivers);
   });
