@@ -3,8 +3,17 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Your stats:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="data in userData" ng-animate="'animate'">
-        <li><a href="#" tooltip="{{data}}" ng-class="{red: !data.correct, green: data.correct}">{{data.time | date:'yyyy-MM-dd HH:mm:ss Z'}}</a></li>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="data in userData">
+        <li ng-click="showDetails = ! showDetails">
+        	<a href="#" tooltip="{{data}}" ng-class="{red: !data.correct, green: data.correct}">
+        		{{data.time | date:'yyyy-MM-dd HH:mm:ss Z'}}
+        	</a>
+        	<div class="data-details animate-hide" ng-show="showDetails">
+            	<p>Backbone: {{data.pressureBackbone}}</p>
+            	<p>Seat: {{data.pressureSeat}}</p>
+            	<p>Armrest left: {{data.pressureLeftArmrest}}, armrest right: {{data.pressureRightArmrest}} </p>
+         	</div>
+        </li>
       </ul>
     </div>
   </div>

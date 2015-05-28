@@ -9,29 +9,66 @@
 	@extend .defaultElement;
 	background-color: #00B261;
 }
+.data-details {
+    border: 1px rgb(89,89,89) solid;
 
-.animate-enter, 
-.animate-leave
-{ 
-    -webkit-transition: 400ms cubic-bezier(0.785, 0.135, 0.150, 0.860) all;
-    -moz-transition: 400ms cubic-bezier(0.785, 0.135, 0.150, 0.860) all;
-    -ms-transition: 400ms cubic-bezier(0.785, 0.135, 0.150, 0.860) all;
-    -o-transition: 400ms cubic-bezier(0.785, 0.135, 0.150, 0.860) all;
-    transition: 400ms cubic-bezier(0.785, 0.135, 0.150, 0.860) all;
-    position: relative;
-    display: block;
-} 
+    color: rgb(25,25,25);
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    text-decoration: inherit;
+    text-align: center;
 
-.animate-enter.animate-enter-active, 
-.animate-leave {
-    opacity: 1;
-    bottom: 0;
-    height: 30px;
+    line-height: 1.3em;
 }
 
-.animate-leave.animate-leave-active,
-.animate-enter {
-    opacity: 0;
-    bottom: -50px;
-    height: 0px;
+
+.animate-hide {
+  -webkit-transition: all linear 0.2s;
+  transition: all linear 0.2s;
+  line-height: 20px;
+  opacity: 1;
+  padding: 1px;
+  border: 1px solid black;
+  background: white;
+}
+
+.animate-hide.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+}
+
+.ng-enter {
+  -webkit-transition: 1s;
+  transition: 1s;
+  
+  margin-left: 100%;
+}
+
+.ng-enter-active {
+  margin-left: 0;
+}
+
+.ng-leave {
+  -webkit-transition: 1s;
+  transition: 1s;
+  
+  margin-left: 0;
+}
+
+.ng-leave-active {
+  margin-left: 100%;
+}
+
+.ng-move {
+  -webkit-transition: 1s;
+  transition: 1s;
+  
+  background: gold;
+}
+
+.ng-move-active {
+  background: #fff;
 }

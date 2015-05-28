@@ -5,6 +5,7 @@ describe('Controller: DashboardCtrl', function () {
   // load the controller's module
   beforeEach(module('orSysApp'));
   beforeEach(module('socketMock'));
+  beforeEach(module('ngAnimate'));
 
   var DashboardCtrl, scope, $httpBackend;
 
@@ -20,11 +21,9 @@ describe('Controller: DashboardCtrl', function () {
     });
   }));
 
-  /*it('should ...', function () {
-    expect(1).toEqual(1);
-  });*/
-  it('should attach a list of things to the scope', function () {
+  
+  it('should attach a list of userdata to the scope', function () {
     $httpBackend.flush();
-    expect(scope.awesomeThings.length).toBe(4);
+    expect(scope.userData.length).toBe(4);
   });
 });
