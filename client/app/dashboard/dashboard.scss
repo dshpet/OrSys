@@ -21,6 +21,9 @@
     text-align: center;
 
     line-height: 1.3em;
+
+
+    position: relative;
 }
 
 
@@ -40,6 +43,18 @@
   padding: 0 10px;
 }
 
+.animate-slide {
+  -webkit-transition: top linear 0.3s;
+  transition: top linear 0.3s;
+  top: 0;
+}
+.animate-slide.ng-hide {
+  top: -20px;
+}
+.animate-slide.ng-hide-add,
+.animate-slide.ng-hide-remove {
+  display: block!important;
+}
 /*
  * ngRepeat triggers three animation events: enter, leave and move.
  */

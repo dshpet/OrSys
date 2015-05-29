@@ -5,16 +5,20 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Your stats:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6 repeat-animation" ng-repeat="data in userData">
+      <div ng-hide="userData.length">
+        <p>No data registered yet for you</p>
+      </div>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6 repeat-animation" ng-repeat="data in userData | orderBy: '-time' ">
         <li ng-click="showDetails = ! showDetails">
         	<a href="#" tooltip="{{data}}" ng-class="{red: !data.correct, green: data.correct}">
         		{{data.time | date:'yyyy-MM-dd HH:mm:ss Z'}}
+
+            <div class="data-details animate-slide" ng-show="showDetails">
+              <p>Backbone: {{data.pressureBackbone}}</p>
+              <p>Seat: {{data.pressureSeat}}</p>
+              <p>Armrest left: {{data.pressureLeftArmrest}}, armrest right: {{data.pressureRightArmrest}} </p>
+            </div>
         	</a>
-        	<div class="data-details animate-hide" ng-show="showDetails">
-            	<p>Backbone: {{data.pressureBackbone}}</p>
-            	<p>Seat: {{data.pressureSeat}}</p>
-            	<p>Armrest left: {{data.pressureLeftArmrest}}, armrest right: {{data.pressureRightArmrest}} </p>
-         	</div>
         </li>
       </ul>
     </div>
